@@ -80,6 +80,35 @@ let UserResolver = class UserResolver {
             user,
         };
     }
+    async Login(usernameOrEmail, password) {
+        const user = await User_1.User.findOne(!usernameOrEmail.includes('@')
+            ? { where: { username: usernameOrEmail } }
+            : { where: { email: usernameOrEmail } });
+        if (!user) {
+            return {
+                errors: [
+                    {
+                        field: 'usernameOrEmail',
+                        message: 'that username does not exist',
+                    },
+                ],
+            };
+        }
+        const valid = await argon2_1.default.verify(user.password, password);
+        if (!valid) {
+            return {
+                errors: [
+                    {
+                        field: 'password',
+                        message: 'incorrect password',
+                    },
+                ],
+            };
+        }
+        return {
+            user,
+        };
+    }
 };
 __decorate([
     (0, type_graphql_1.Mutation)(() => UserResponse),
@@ -88,6 +117,14 @@ __decorate([
     __metadata("design:paramtypes", [UsernamePasswordInput_1.UsernamePasswordInput]),
     __metadata("design:returntype", Promise)
 ], UserResolver.prototype, "Register", null);
+__decorate([
+    (0, type_graphql_1.Mutation)(() => UserResponse),
+    __param(0, (0, type_graphql_1.Arg)('usernameOrEmail')),
+    __param(1, (0, type_graphql_1.Arg)('password')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", Promise)
+], UserResolver.prototype, "Login", null);
 UserResolver = __decorate([
     (0, type_graphql_1.Resolver)()
 ], UserResolver);
