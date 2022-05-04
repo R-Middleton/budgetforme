@@ -1,9 +1,10 @@
 import { User } from '../entities/User';
-// import { MyContext } from '../types';
+import { MyContext } from '../types';
 import { validateRegsiter } from '../utils/validateRegister';
-import { Arg, Field, Mutation, ObjectType, Resolver } from 'type-graphql';
+import { Arg, Ctx, Field, Mutation, ObjectType, Resolver } from 'type-graphql';
 import { UsernamePasswordInput } from './UsernamePasswordInput';
 import argon2 from 'argon2';
+import { COOKIENAME } from '../constants';
 
 @ObjectType()
 class FieldError {
@@ -24,8 +25,8 @@ class UserResponse {
 export class UserResolver {
   @Mutation(() => UserResponse)
   async Register(
-    @Arg('options') options: UsernamePasswordInput
-    // @Ctx() { req }: MyContext
+    @Arg('options') options: UsernamePasswordInput,
+    @Ctx() { req }: MyContext
   ): Promise<UserResponse> {
     const errors = validateRegsiter(options);
     if (errors) {
@@ -44,12 +45,12 @@ export class UserResolver {
     } catch (err) {
       // duplicate username or email error
       if (err.code === '23505' || err.detail.includes('already exists')) {
-        if (err.constraint.includes('username')) {
+        if (err.detail.includes('username')) {
           return {
             errors: [{ field: 'username', message: 'username already exists' }],
           };
         }
-        if (err.constraint.includes('email')) {
+        if (err.detail.includes('email')) {
           return {
             errors: [{ field: 'email', message: 'email already exists' }],
           };
@@ -58,7 +59,7 @@ export class UserResolver {
     }
 
     // log in user after registering
-    // req.session!.userId = user.id;
+    req.session!.userId = user.id;
 
     return {
       user,
@@ -68,8 +69,8 @@ export class UserResolver {
   @Mutation(() => UserResponse)
   async Login(
     @Arg('usernameOrEmail') usernameOrEmail: string,
-    @Arg('password') password: string
-    //@Ctx() { req }: MyContext
+    @Arg('password') password: string,
+    @Ctx() { req }: MyContext
   ): Promise<UserResponse> {
     const user = await User.findOne(
       !usernameOrEmail.includes('@')
@@ -101,10 +102,25 @@ export class UserResolver {
     // Store user ID session
     // This will set a cookie on the user
     // and keep them logged in
-    //req.session!.userId = user.id;
+    req.session!.userId = user.id;
 
     return {
       user,
     };
+  }
+
+  @Mutation(() => Boolean)
+  async Logout(@Ctx() { req, res }: MyContext) {
+    return new Promise((resolve) =>
+      req.session!.destroy((err) => {
+        res.clearCookie(COOKIENAME);
+        if (err) {
+          console.log(err);
+          resolve(false);
+          return;
+        }
+        resolve(true);
+      })
+    );
   }
 }

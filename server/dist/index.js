@@ -17,6 +17,7 @@ const connect_redis_1 = __importDefault(require("connect-redis"));
 const express_session_1 = __importDefault(require("express-session"));
 const ioredis_1 = __importDefault(require("ioredis"));
 const constants_1 = require("./constants");
+const cors_1 = __importDefault(require("cors"));
 const main = async () => {
     const dataSource = new typeorm_1.DataSource({
         type: 'postgres',
@@ -32,6 +33,10 @@ const main = async () => {
     app.get('/', (_, res) => {
         res.send('Hello World!');
     });
+    app.use((0, cors_1.default)({
+        origin: ['http://localhost:3000', 'https://studio.apollographql.com'],
+        credentials: true,
+    }));
     const RedisStore = (0, connect_redis_1.default)(express_session_1.default);
     const redis = new ioredis_1.default();
     app.use((0, express_session_1.default)({

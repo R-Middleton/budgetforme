@@ -13,6 +13,7 @@ import connectRedis from 'connect-redis';
 import session from 'express-session';
 import Redis from 'ioredis';
 import { COOKIENAME, __prod__ } from './constants';
+import cors from 'cors';
 
 declare module 'express-session' {
   interface Session {
@@ -36,6 +37,13 @@ const main = async () => {
   app.get('/', (_, res) => {
     res.send('Hello World!');
   });
+
+  app.use(
+    cors({
+      origin: ['http://localhost:3000', 'https://studio.apollographql.com'],
+      credentials: true,
+    })
+  );
 
   const RedisStore = connectRedis(session);
   const redis = new Redis();
