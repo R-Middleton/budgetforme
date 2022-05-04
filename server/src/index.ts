@@ -9,6 +9,10 @@ import { Transaction } from './entities/Transaction';
 import { Account } from './entities/Account';
 import { MyContext } from './types';
 import { UserResolver } from './resolvers/user';
+import connectRedis from 'connect-redis';
+import session from 'express-session';
+import Redis from 'ioredis';
+import { COOKIENAME, __prod__ } from './constants';
 
 declare module 'express-session' {
   interface Session {
@@ -32,6 +36,28 @@ const main = async () => {
   app.get('/', (_, res) => {
     res.send('Hello World!');
   });
+
+  const RedisStore = connectRedis(session);
+  const redis = new Redis();
+
+  app.use(
+    session({
+      name: COOKIENAME,
+      store: new RedisStore({
+        client: redis as any,
+        disableTouch: false,
+      }),
+      cookie: {
+        maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 years
+        httpOnly: true,
+        secure: __prod__, // cookie only works in https
+        sameSite: 'lax', //csrf
+      },
+      saveUninitialized: false,
+      secret: 'change this secret',
+      resave: false,
+    })
+  );
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
