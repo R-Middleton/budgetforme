@@ -18,8 +18,12 @@ export class Transaction extends BaseEntity {
   id!: number;
 
   @Field(() => Float)
-  @Column()
+  @Column({ type: 'float', default: 0 })
   ammount!: number;
+
+  @Field()
+  @Column()
+  accountId: number;
 
   @ManyToOne(() => Account, (account) => account.transactions)
   account!: Account;

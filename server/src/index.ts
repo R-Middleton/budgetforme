@@ -9,6 +9,7 @@ import { Transaction } from './entities/Transaction';
 import { Account } from './entities/Account';
 import { MyContext } from './types';
 import { UserResolver } from './resolvers/user';
+import { AccountResolver } from './resolvers/account';
 import connectRedis from 'connect-redis';
 import session from 'express-session';
 import Redis from 'ioredis';
@@ -40,7 +41,7 @@ const main = async () => {
 
   app.use(
     cors({
-      origin: ['http://localhost:3000', 'https://studio.apollographql.com'],
+      origin: ['http://localhost:4000', 'https://studio.apollographql.com'],
       credentials: true,
     })
   );
@@ -59,7 +60,7 @@ const main = async () => {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 years
         httpOnly: true,
         secure: __prod__, // cookie only works in https
-        sameSite: 'lax', //csrf
+        sameSite: 'none', //csrf
       },
       saveUninitialized: false,
       secret: 'change this secret',
@@ -69,18 +70,20 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HelloResolver, UserResolver],
+      resolvers: [HelloResolver, UserResolver, AccountResolver],
       validate: false,
     }),
-    context: ({ req, res }): MyContext => ({ req, res }),
+    context: ({ req, res }): MyContext => ({ req, res, redis }),
   });
 
   apolloServer.start().then(() => {
-    apolloServer.applyMiddleware({ app });
+    apolloServer.applyMiddleware({ app, cors: false });
     app.listen(4000, () => {
       console.log('Server started on localhost:4000');
     });
   });
 };
 
-main().catch(console.error);
+main().catch((err) => {
+  console.log(err);
+});

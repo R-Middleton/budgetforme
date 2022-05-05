@@ -22,10 +22,20 @@ __decorate([
     __metadata("design:type", Number)
 ], Account.prototype, "id", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => type_graphql_1.Float),
+    (0, type_graphql_1.Field)(),
     (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Account.prototype, "name", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => type_graphql_1.Float),
+    (0, typeorm_1.Column)({ type: 'float', default: 0 }),
     __metadata("design:type", Number)
 ], Account.prototype, "balance", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(),
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], Account.prototype, "userId", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => User_1.User, (user) => user.accounts),
     __metadata("design:type", User_1.User)

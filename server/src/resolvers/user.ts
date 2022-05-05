@@ -5,14 +5,7 @@ import { Arg, Ctx, Field, Mutation, ObjectType, Resolver } from 'type-graphql';
 import { UsernamePasswordInput } from './UsernamePasswordInput';
 import argon2 from 'argon2';
 import { COOKIENAME } from '../constants';
-
-@ObjectType()
-class FieldError {
-  @Field()
-  field: string;
-  @Field()
-  message: string;
-}
+import { FieldError } from './FieldError';
 
 @ObjectType()
 class UserResponse {

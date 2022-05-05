@@ -19,9 +19,17 @@ export class Account extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Field(() => Float)
+  @Field()
   @Column()
+  name!: string;
+
+  @Field(() => Float)
+  @Column({ type: 'float', default: 0 })
   balance!: number;
+
+  @Field()
+  @Column()
+  userId: number;
 
   @ManyToOne(() => User, (user) => user.accounts)
   user!: User;

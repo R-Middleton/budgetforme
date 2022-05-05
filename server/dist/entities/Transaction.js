@@ -22,9 +22,14 @@ __decorate([
 ], Transaction.prototype, "id", void 0);
 __decorate([
     (0, type_graphql_1.Field)(() => type_graphql_1.Float),
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ type: 'float', default: 0 }),
     __metadata("design:type", Number)
 ], Transaction.prototype, "ammount", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(),
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], Transaction.prototype, "accountId", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => Account_1.Account, (account) => account.transactions),
     __metadata("design:type", Account_1.Account)
