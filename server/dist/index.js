@@ -19,6 +19,8 @@ const express_session_1 = __importDefault(require("express-session"));
 const ioredis_1 = __importDefault(require("ioredis"));
 const constants_1 = require("./constants");
 const cors_1 = __importDefault(require("cors"));
+const Category_1 = require("./entities/Category");
+const CategoryGroup_1 = require("./entities/CategoryGroup");
 const main = async () => {
     const dataSource = new typeorm_1.DataSource({
         type: 'postgres',
@@ -27,7 +29,7 @@ const main = async () => {
         password: 'postgres',
         logging: true,
         synchronize: true,
-        entities: [User_1.User, Account_1.Account, Transaction_1.Transaction],
+        entities: [User_1.User, Account_1.Account, Transaction_1.Transaction, Category_1.Category, CategoryGroup_1.CategoryGroup],
     });
     await dataSource.initialize();
     const app = (0, express_1.default)();

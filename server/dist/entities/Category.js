@@ -9,59 +9,59 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Account = void 0;
+exports.Category = void 0;
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
-const User_1 = require("./User");
-const Transaction_1 = require("./Transaction");
-const Category_1 = require("./Category");
-let Account = class Account extends typeorm_1.BaseEntity {
+const Account_1 = require("./Account");
+const CategoryGroup_1 = require("./CategoryGroup");
+let Category = class Category extends typeorm_1.BaseEntity {
 };
 __decorate([
     (0, type_graphql_1.Field)(),
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
-], Account.prototype, "id", void 0);
+], Category.prototype, "id", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Account.prototype, "name", void 0);
+], Category.prototype, "name", void 0);
 __decorate([
     (0, type_graphql_1.Field)(() => type_graphql_1.Float),
     (0, typeorm_1.Column)({ type: 'float', default: 0 }),
     __metadata("design:type", Number)
-], Account.prototype, "balance", void 0);
+], Category.prototype, "assigned", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => type_graphql_1.Float),
+    (0, typeorm_1.Column)({ type: 'float', default: 0 }),
+    __metadata("design:type", Number)
+], Category.prototype, "activity", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
-], Account.prototype, "userId", void 0);
+], Category.prototype, "accountId", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => User_1.User, (user) => user.accounts),
-    __metadata("design:type", User_1.User)
-], Account.prototype, "user", void 0);
+    (0, typeorm_1.ManyToOne)(() => Account_1.Account, (account) => account.categories),
+    __metadata("design:type", Account_1.Account)
+], Category.prototype, "account", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => Transaction_1.Transaction, (transaction) => transaction.account),
+    (0, typeorm_1.OneToMany)(() => CategoryGroup_1.CategoryGroup, (categoryGroup) => categoryGroup.category),
     __metadata("design:type", Array)
-], Account.prototype, "transactions", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => Category_1.Category, (category) => category.account),
-    __metadata("design:type", Array)
-], Account.prototype, "categories", void 0);
+], Category.prototype, "categoryGroups", void 0);
 __decorate([
     (0, type_graphql_1.Field)(() => String),
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
-], Account.prototype, "createdAt", void 0);
+], Category.prototype, "createdAt", void 0);
 __decorate([
     (0, type_graphql_1.Field)(() => String),
     (0, typeorm_1.UpdateDateColumn)(),
     __metadata("design:type", Date)
-], Account.prototype, "updatedAt", void 0);
-Account = __decorate([
+], Category.prototype, "updatedAt", void 0);
+Category = __decorate([
     (0, type_graphql_1.ObjectType)(),
     (0, typeorm_1.Entity)()
-], Account);
-exports.Account = Account;
-//# sourceMappingURL=Account.js.map
+], Category);
+exports.Category = Category;
+//# sourceMappingURL=Category.js.map

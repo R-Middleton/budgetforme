@@ -15,6 +15,8 @@ import session from 'express-session';
 import Redis from 'ioredis';
 import { COOKIENAME, __prod__ } from './constants';
 import cors from 'cors';
+import { Category } from './entities/Category';
+import { CategoryGroup } from './entities/CategoryGroup';
 
 declare module 'express-session' {
   interface Session {
@@ -30,7 +32,7 @@ const main = async () => {
     password: 'postgres',
     logging: true,
     synchronize: true,
-    entities: [User, Account, Transaction],
+    entities: [User, Account, Transaction, Category, CategoryGroup],
   });
   await dataSource.initialize();
 

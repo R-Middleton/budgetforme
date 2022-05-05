@@ -9,13 +9,12 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { User } from './User';
-import { Transaction } from './Transaction';
-import { Category } from './Category';
+import { Account } from './Account';
+import { CategoryGroup } from './CategoryGroup';
 
 @ObjectType()
 @Entity()
-export class Account extends BaseEntity {
+export class Category extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id!: number;
@@ -26,20 +25,21 @@ export class Account extends BaseEntity {
 
   @Field(() => Float)
   @Column({ type: 'float', default: 0 })
-  balance!: number;
+  assigned!: number;
+
+  @Field(() => Float)
+  @Column({ type: 'float', default: 0 })
+  activity!: number;
 
   @Field()
   @Column()
-  userId: number;
+  accountId: number;
 
-  @ManyToOne(() => User, (user) => user.accounts)
-  user!: User;
+  @ManyToOne(() => Account, (account) => account.categories)
+  account!: Account;
 
-  @OneToMany(() => Transaction, (transaction) => transaction.account)
-  transactions: Transaction[];
-
-  @OneToMany(() => Category, (category) => category.account)
-  categories: Category[];
+  @OneToMany(() => CategoryGroup, (categoryGroup) => categoryGroup.category)
+  categoryGroups: CategoryGroup[];
 
   @Field(() => String)
   @CreateDateColumn()
