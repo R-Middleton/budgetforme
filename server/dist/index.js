@@ -37,7 +37,11 @@ const main = async () => {
         res.send('Hello World!');
     });
     app.use((0, cors_1.default)({
-        origin: ['http://localhost:4000', 'https://studio.apollographql.com'],
+        origin: [
+            'http://localhost:3000',
+            'http://localhost:4000',
+            'https://studio.apollographql.com',
+        ],
         credentials: true,
     }));
     const RedisStore = (0, connect_redis_1.default)(express_session_1.default);

@@ -1,10 +1,12 @@
 import type { NextPage } from 'next'
-import { Field, Form, Formik } from 'formik'
+import { Form, Formik } from 'formik'
 import { useRouter } from 'next/router'
 import { InputField } from '../components/InputeField'
+import { useRegisterMutation } from '../generated/graphql'
+import { toErrorMap } from '../utils/toErrorMap'
 
 const Register: NextPage = () => {
-  //const [, register] = useRegisterMutation();
+  const [, register] = useRegisterMutation()
   const router = useRouter()
 
   return (
@@ -16,13 +18,13 @@ const Register: NextPage = () => {
           password: '',
         }}
         onSubmit={async (values, { setErrors }) => {
-          // const response = await regsiter({ options: values });
-          // if (response.data?.Register.errors) {
-          //   setErrors(toErrorMap(response.data.Register.errors));
-          // } else if (response.data?.Register.user) {
-          //   // worked
-          //   router.push('/');
-          // }
+          const response = await register({ options: values })
+          if (response.data?.Register.errors) {
+            setErrors(toErrorMap(response.data.Register.errors))
+          } else if (response.data?.Register.user) {
+            // worked
+            router.push('/')
+          }
           console.log(values)
         }}
       >
