@@ -1,16 +1,67 @@
 module.exports = {
   content: [
-    './pages/**/*.{js,ts,jsx,tsx}',
-    './components/**/*.{js,ts,jsx,tsx}',
+    './src/pages/**/*.{js,ts,jsx,tsx}',
+    './src/components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
     screens: {
       sm: '480px',
       md: '768px',
       lg: '976px',
-      xl: '1400px'
+      xl: '1400px',
     },
-    extend: {}
+    extend: {
+      colors: {
+        myorange: {
+          50: '#FCF2E8',
+          100: '#FAE4D1',
+          200: '#F5CCA8',
+          300: '#EFB17B',
+          400: '#EA9952',
+          500: '#E58025',
+          600: '#BF6517',
+          700: '#8D4B11',
+          800: '#60330B',
+          900: '#2E1805',
+        },
+        mybean: {
+          50: '#F9EEE6',
+          100: '#F2DECE',
+          200: '#E2BB9D',
+          300: '#CF9A72',
+          400: '#B97B4B',
+          500: '#895D3C',
+          600: '#724A2C',
+          700: '#57371E',
+          800: '#3B2312',
+          900: '#201308',
+        },
+        mycream: {
+          50: '#FFFDFA',
+          100: '#FFFAF5',
+          200: '#FFF5EB',
+          300: '#FFF1E0',
+          400: '#FFECD6',
+          500: '#FFE9CF',
+          600: '#FFBC70',
+          700: '#FF9214',
+          800: '#B86200',
+          900: '#5C3100',
+        },
+        mysea: {
+          50: '#D6FFFA',
+          100: '#A8FFF3',
+          200: '#52FFE8',
+          300: '#00FFDD',
+          400: '#00A892',
+          500: '#005247',
+          600: '#004239',
+          700: '#00332C',
+          800: '#001F1B',
+          900: '#000F0D',
+        },
+      },
+    },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/forms')],
 }
