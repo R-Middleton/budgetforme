@@ -1,7 +1,15 @@
 import { User } from '../entities/User';
 import { MyContext } from '../types';
 import { validateRegsiter } from '../utils/validateRegister';
-import { Arg, Ctx, Field, Mutation, ObjectType, Resolver } from 'type-graphql';
+import {
+  Arg,
+  Ctx,
+  Field,
+  Mutation,
+  ObjectType,
+  Query,
+  Resolver,
+} from 'type-graphql';
 import { UsernamePasswordInput } from './UsernamePasswordInput';
 import argon2 from 'argon2';
 import { COOKIENAME } from '../constants';
@@ -16,6 +24,16 @@ class UserResponse {
 
 @Resolver()
 export class UserResolver {
+  @Query(() => User, { nullable: true })
+  me(@Ctx() { req }: MyContext): Promise<User | null> {
+    // you are not logged in
+    if (!req.session!.userId) {
+      return null!;
+    }
+
+    return User.findOne({ where: { id: req.session!.userId } });
+  }
+
   @Mutation(() => UserResponse)
   async Register(
     @Arg('options') options: UsernamePasswordInput,
@@ -96,6 +114,9 @@ export class UserResolver {
     // This will set a cookie on the user
     // and keep them logged in
     req.session!.userId = user.id;
+    console.log(req.session!.userId);
+    console.log(req.session);
+    console.log(req.session!.cookie);
 
     return {
       user,

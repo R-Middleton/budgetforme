@@ -2,26 +2,25 @@ import type { NextPage } from 'next'
 import { Form, Formik } from 'formik'
 import { useRouter } from 'next/router'
 import { InputField } from '../components/InputeField'
-import { useRegisterMutation } from '../generated/graphql'
+import { useLoginMutation } from '../generated/graphql'
 import { toErrorMap } from '../utils/toErrorMap'
 
-const Register: NextPage = () => {
-  const [, register] = useRegisterMutation()
+const Login: NextPage = () => {
+  const [, login] = useLoginMutation()
   const router = useRouter()
 
   return (
     <div className="mx-auto mt-8 w-full max-w-sm">
       <Formik
         initialValues={{
-          email: '',
-          username: '',
+          usernameOrEmail: '',
           password: '',
         }}
         onSubmit={async (values, { setErrors }) => {
-          const response = await register({ options: values })
-          if (response.data?.Register.errors) {
-            setErrors(toErrorMap(response.data.Register.errors))
-          } else if (response.data?.Register.user) {
+          const response = await login(values)
+          if (response.data?.Login.errors) {
+            setErrors(toErrorMap(response.data.Login.errors))
+          } else if (response.data?.Login.user) {
             // worked
             router.push('/')
           }
@@ -29,16 +28,10 @@ const Register: NextPage = () => {
       >
         <Form className=" grid grid-cols-1 gap-6">
           <InputField
-            name="username"
-            label="Username"
-            placeholder="Username"
+            name="usernameOrEmail"
+            label="Username or email"
+            placeholder="username or email"
             type="text"
-          />
-          <InputField
-            name="email"
-            label="Email"
-            placeholder="Email"
-            type="email"
           />
           <InputField
             name="password"
@@ -50,7 +43,7 @@ const Register: NextPage = () => {
             className="w-20 rounded-md bg-blue-500 py-2 px-4 text-white hover:bg-blue-700"
             type="submit"
           >
-            Submit
+            Login
           </button>
         </Form>
       </Formik>
@@ -58,4 +51,4 @@ const Register: NextPage = () => {
   )
 }
 
-export default Register
+export default Login

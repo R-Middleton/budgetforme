@@ -43,12 +43,9 @@ const main = async () => {
 
   app.use(
     cors({
-      origin: [
-        'http://localhost:3000',
-        'http://localhost:4000',
-        'https://studio.apollographql.com',
-      ],
+      origin: ['http://localhost:3000', 'https://studio.apollographql.com'],
       credentials: true,
+      exposedHeaders: ['set-cookie'],
     })
   );
 
@@ -66,10 +63,10 @@ const main = async () => {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 years
         httpOnly: true,
         secure: __prod__, // cookie only works in https
-        sameSite: 'none', //csrf
+        sameSite: 'lax', //csrf
       },
       saveUninitialized: false,
-      secret: 'change this secret',
+      secret: 'keyboard cat',
       resave: false,
     })
   );

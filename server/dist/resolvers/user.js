@@ -37,6 +37,12 @@ UserResponse = __decorate([
     (0, type_graphql_1.ObjectType)()
 ], UserResponse);
 let UserResolver = class UserResolver {
+    me({ req }) {
+        if (!req.session.userId) {
+            return null;
+        }
+        return User_1.User.findOne({ where: { id: req.session.userId } });
+    }
     async Register(options, { req }) {
         const errors = (0, validateRegister_1.validateRegsiter)(options);
         if (errors) {
@@ -96,6 +102,9 @@ let UserResolver = class UserResolver {
             };
         }
         req.session.userId = user.id;
+        console.log(req.session.userId);
+        console.log(req.session);
+        console.log(req.session.cookie);
         return {
             user,
         };
@@ -112,6 +121,13 @@ let UserResolver = class UserResolver {
         }));
     }
 };
+__decorate([
+    (0, type_graphql_1.Query)(() => User_1.User, { nullable: true }),
+    __param(0, (0, type_graphql_1.Ctx)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UserResolver.prototype, "me", null);
 __decorate([
     (0, type_graphql_1.Mutation)(() => UserResponse),
     __param(0, (0, type_graphql_1.Arg)('options')),
