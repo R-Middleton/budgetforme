@@ -1,5 +1,5 @@
 mutation Register($options: UsernamePasswordInput!) {
-  Register(options: $options) {
+  register(options: $options) {
     ...RegularUserResponse
   }
 }

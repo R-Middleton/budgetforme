@@ -18,9 +18,9 @@ const Login: NextPage = () => {
         }}
         onSubmit={async (values, { setErrors }) => {
           const response = await login(values)
-          if (response.data?.Login.errors) {
-            setErrors(toErrorMap(response.data.Login.errors))
-          } else if (response.data?.Login.user) {
+          if (response.data?.login.errors) {
+            setErrors(toErrorMap(response.data.login.errors))
+          } else if (response.data?.login.user) {
             // worked
             router.push('/')
           }

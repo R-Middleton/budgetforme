@@ -37,10 +37,15 @@ export type FieldError = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  Login: UserResponse;
-  Logout: Scalars['Boolean'];
-  Register: UserResponse;
   createAccount: Account;
+  login: UserResponse;
+  logout: Scalars['Boolean'];
+  register: UserResponse;
+};
+
+
+export type MutationCreateAccountArgs = {
+  input: AccountInput;
 };
 
 
@@ -52,11 +57,6 @@ export type MutationLoginArgs = {
 
 export type MutationRegisterArgs = {
   options: UsernamePasswordInput;
-};
-
-
-export type MutationCreateAccountArgs = {
-  input: AccountInput;
 };
 
 export type Query = {
@@ -98,14 +98,14 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', Login: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, user?: { __typename?: 'User', id: number, username: string } | null } };
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, user?: { __typename?: 'User', id: number, username: string } | null } };
 
 export type RegisterMutationVariables = Exact<{
   options: UsernamePasswordInput;
 }>;
 
 
-export type RegisterMutation = { __typename?: 'Mutation', Register: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, user?: { __typename?: 'User', id: number, username: string } | null } };
+export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, user?: { __typename?: 'User', id: number, username: string } | null } };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -137,7 +137,7 @@ export const RegularUserResponseFragmentDoc = gql`
 ${RegularUserFragmentDoc}`;
 export const LoginDocument = gql`
     mutation Login($usernameOrEmail: String!, $password: String!) {
-  Login(usernameOrEmail: $usernameOrEmail, password: $password) {
+  login(usernameOrEmail: $usernameOrEmail, password: $password) {
     ...RegularUserResponse
   }
 }
@@ -148,7 +148,7 @@ export function useLoginMutation() {
 };
 export const RegisterDocument = gql`
     mutation Register($options: UsernamePasswordInput!) {
-  Register(options: $options) {
+  register(options: $options) {
     ...RegularUserResponse
   }
 }

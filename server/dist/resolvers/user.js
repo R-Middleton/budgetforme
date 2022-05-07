@@ -43,7 +43,7 @@ let UserResolver = class UserResolver {
         }
         return User_1.User.findOne({ where: { id: req.session.userId } });
     }
-    async Register(options, { req }) {
+    async register(options, { req }) {
         const errors = (0, validateRegister_1.validateRegsiter)(options);
         if (errors) {
             return { errors };
@@ -76,7 +76,7 @@ let UserResolver = class UserResolver {
             user,
         };
     }
-    async Login(usernameOrEmail, password, { req }) {
+    async login(usernameOrEmail, password, { req }) {
         const user = await User_1.User.findOne(!usernameOrEmail.includes('@')
             ? { where: { username: usernameOrEmail } }
             : { where: { email: usernameOrEmail } });
@@ -109,7 +109,7 @@ let UserResolver = class UserResolver {
             user,
         };
     }
-    async Logout({ req, res }) {
+    async logout({ req, res }) {
         return new Promise((resolve) => req.session.destroy((err) => {
             res.clearCookie(constants_1.COOKIENAME);
             if (err) {
@@ -135,7 +135,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [UsernamePasswordInput_1.UsernamePasswordInput, Object]),
     __metadata("design:returntype", Promise)
-], UserResolver.prototype, "Register", null);
+], UserResolver.prototype, "register", null);
 __decorate([
     (0, type_graphql_1.Mutation)(() => UserResponse),
     __param(0, (0, type_graphql_1.Arg)('usernameOrEmail')),
@@ -144,14 +144,14 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String, Object]),
     __metadata("design:returntype", Promise)
-], UserResolver.prototype, "Login", null);
+], UserResolver.prototype, "login", null);
 __decorate([
     (0, type_graphql_1.Mutation)(() => Boolean),
     __param(0, (0, type_graphql_1.Ctx)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
-], UserResolver.prototype, "Logout", null);
+], UserResolver.prototype, "logout", null);
 UserResolver = __decorate([
     (0, type_graphql_1.Resolver)()
 ], UserResolver);

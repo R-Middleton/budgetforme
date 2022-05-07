@@ -35,7 +35,7 @@ export class UserResolver {
   }
 
   @Mutation(() => UserResponse)
-  async Register(
+  async register(
     @Arg('options') options: UsernamePasswordInput,
     @Ctx() { req }: MyContext
   ): Promise<UserResponse> {
@@ -78,7 +78,7 @@ export class UserResolver {
   }
 
   @Mutation(() => UserResponse)
-  async Login(
+  async login(
     @Arg('usernameOrEmail') usernameOrEmail: string,
     @Arg('password') password: string,
     @Ctx() { req }: MyContext
@@ -124,7 +124,7 @@ export class UserResolver {
   }
 
   @Mutation(() => Boolean)
-  async Logout(@Ctx() { req, res }: MyContext) {
+  async logout(@Ctx() { req, res }: MyContext) {
     return new Promise((resolve) =>
       req.session!.destroy((err) => {
         res.clearCookie(COOKIENAME);
