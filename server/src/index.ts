@@ -35,17 +35,12 @@ const main = async () => {
     entities: [User, Account, Transaction, Category, CategoryGroup],
   });
   await dataSource.initialize();
-
   const app = express();
-  app.get('/', (_, res) => {
-    res.send('Hello World!');
-  });
 
   app.use(
     cors({
       origin: ['http://localhost:3000', 'https://studio.apollographql.com'],
       credentials: true,
-      exposedHeaders: ['set-cookie'],
     })
   );
 

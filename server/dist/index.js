@@ -33,13 +33,9 @@ const main = async () => {
     });
     await dataSource.initialize();
     const app = (0, express_1.default)();
-    app.get('/', (_, res) => {
-        res.send('Hello World!');
-    });
     app.use((0, cors_1.default)({
         origin: ['http://localhost:3000', 'https://studio.apollographql.com'],
         credentials: true,
-        exposedHeaders: ['set-cookie'],
     }));
     const RedisStore = (0, connect_redis_1.default)(express_session_1.default);
     const redis = new ioredis_1.default();

@@ -1,4 +1,6 @@
 {
+  "name": "budgetforme-web",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -7,11 +9,14 @@
     "gen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
+    "@urql/exchange-graphcache": "^4.3.6",
     "formik": "^2.2.9",
     "graphql": "^16.4.0",
     "next": "latest",
+    "next-urql": "^3.3.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-is": "^18.1.0",
     "urql": "^2.2.0"
   },
   "devDependencies": {
