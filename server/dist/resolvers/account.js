@@ -29,6 +29,9 @@ let AccountResolver = class AccountResolver {
     async createAccount(input, { req }) {
         return Account_1.Account.create(Object.assign(Object.assign({}, input), { userId: req.session.userId })).save();
     }
+    async accounts() {
+        return Account_1.Account.find();
+    }
 };
 __decorate([
     (0, type_graphql_1.Mutation)(() => Account_1.Account),
@@ -39,6 +42,12 @@ __decorate([
     __metadata("design:paramtypes", [AccountInput, Object]),
     __metadata("design:returntype", Promise)
 ], AccountResolver.prototype, "createAccount", null);
+__decorate([
+    (0, type_graphql_1.Query)(() => [Account_1.Account]),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], AccountResolver.prototype, "accounts", null);
 AccountResolver = __decorate([
     (0, type_graphql_1.Resolver)()
 ], AccountResolver);

@@ -5,6 +5,7 @@ import {
   Field,
   InputType,
   Mutation,
+  Query,
   Resolver,
   UseMiddleware,
 } from 'type-graphql';
@@ -29,6 +30,11 @@ export class AccountResolver {
       ...input,
       userId: req.session!.userId,
     }).save();
+  }
+
+  @Query(() => [Account])
+  async accounts(): Promise<Account[]> {
+    return Account.find();
   }
 
   // @Mutation(() => UserResponse)

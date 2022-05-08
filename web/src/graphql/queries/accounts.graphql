@@ -1,0 +1,10 @@
+query Query {
+  accounts {
+    id
+    name
+    balance
+    userId
+    createdAt
+    updatedAt
+  }
+}
