@@ -23,6 +23,8 @@ const UsernamePasswordInput_1 = require("./UsernamePasswordInput");
 const argon2_1 = __importDefault(require("argon2"));
 const constants_1 = require("../constants");
 const FieldError_1 = require("./FieldError");
+const sendEmail_1 = require("src/utils/sendEmail");
+const uuid_1 = require("uuid");
 let UserResponse = class UserResponse {
 };
 __decorate([
@@ -120,6 +122,16 @@ let UserResolver = class UserResolver {
             resolve(true);
         }));
     }
+    async ForgotPassword(email, { redis }) {
+        const user = await User_1.User.findOne({ where: { email } });
+        if (!user) {
+            return true;
+        }
+        const token = (0, uuid_1.v4)();
+        await redis.set(constants_1.FORGET_PASSWORD_PREFIX + token, user.id, 'EX', 1000 * 60 * 60);
+        (0, sendEmail_1.sendEmail)(email, `<a href="http://localhost:3000/change-password/${token}">reset password</a>`);
+        return true;
+    }
 };
 __decorate([
     (0, type_graphql_1.Query)(() => User_1.User, { nullable: true }),
@@ -152,6 +164,14 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], UserResolver.prototype, "logout", null);
+__decorate([
+    (0, type_graphql_1.Mutation)(() => Boolean),
+    __param(0, (0, type_graphql_1.Arg)('email')),
+    __param(1, (0, type_graphql_1.Ctx)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], UserResolver.prototype, "ForgotPassword", null);
 UserResolver = __decorate([
     (0, type_graphql_1.Resolver)()
 ], UserResolver);
