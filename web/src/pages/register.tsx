@@ -4,6 +4,8 @@ import { useRouter } from 'next/router'
 import { InputField } from '../components/InputeField'
 import { useRegisterMutation } from '../generated/graphql'
 import { toErrorMap } from '../utils/toErrorMap'
+import { withUrqlClient } from 'next-urql'
+import { createUrqlClient } from '../utils/createUrqlClient'
 
 const Register: NextPage = () => {
   const [, register] = useRegisterMutation()
@@ -19,9 +21,9 @@ const Register: NextPage = () => {
         }}
         onSubmit={async (values, { setErrors }) => {
           const response = await register({ options: values })
-          if (response.data?.Register.errors) {
-            setErrors(toErrorMap(response.data.Register.errors))
-          } else if (response.data?.Register.user) {
+          if (response.data?.register.errors) {
+            setErrors(toErrorMap(response.data.register.errors))
+          } else if (response.data?.register.user) {
             // worked
             router.push('/')
           }
@@ -58,4 +60,4 @@ const Register: NextPage = () => {
   )
 }
 
-export default Register
+export default withUrqlClient(createUrqlClient)(Register)
