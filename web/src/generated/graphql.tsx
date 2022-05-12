@@ -37,10 +37,16 @@ export type FieldError = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  ForgotPassword: Scalars['Boolean'];
   createAccount: Account;
   login: UserResponse;
   logout: Scalars['Boolean'];
   register: UserResponse;
+};
+
+
+export type MutationForgotPasswordArgs = {
+  email: Scalars['String'];
 };
 
 

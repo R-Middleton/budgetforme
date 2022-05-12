@@ -14,7 +14,7 @@ import { UsernamePasswordInput } from './UsernamePasswordInput';
 import argon2 from 'argon2';
 import { COOKIENAME, FORGET_PASSWORD_PREFIX } from '../constants';
 import { FieldError } from './FieldError';
-import { sendEmail } from 'src/utils/sendEmail';
+import { sendEmail } from '../utils/sendEmail';
 import { v4 } from 'uuid';
 
 @ObjectType()

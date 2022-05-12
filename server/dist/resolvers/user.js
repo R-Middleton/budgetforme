@@ -23,7 +23,7 @@ const UsernamePasswordInput_1 = require("./UsernamePasswordInput");
 const argon2_1 = __importDefault(require("argon2"));
 const constants_1 = require("../constants");
 const FieldError_1 = require("./FieldError");
-const sendEmail_1 = require("src/utils/sendEmail");
+const sendEmail_1 = require("../utils/sendEmail");
 const uuid_1 = require("uuid");
 let UserResponse = class UserResponse {
 };

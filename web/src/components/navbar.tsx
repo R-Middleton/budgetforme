@@ -1,21 +1,17 @@
 import NextLink from 'next/link'
-import {
-  useMeQuery,
-  useLogoutMutation,
-  LogoutDocument,
-} from '../generated/graphql'
+import { useMeQuery, useLogoutMutation } from '../generated/graphql'
+import { isServer } from '../utils/isServer'
 
 export const NavBar = () => {
-  const [{ data, fetching }] = useMeQuery()
-  const [, logout] = useLogoutMutation()
+  const [{}, logout] = useLogoutMutation()
+  const [{ data, fetching }] = useMeQuery({ pause: isServer() })
   let body = null
 
-  if (fetching) {
-    body = null
+  if (isServer() || fetching) {
   } else if (!data?.me) {
     body = (
       <nav className="ml-auto mt-4 flex flex-col md:mt-0 md:flex-row md:space-x-8 md:text-sm md:font-medium">
-        <NextLink href="/login">
+        <NextLink href="/login" passHref>
           <a
             href="#"
             className="block border-b border-gray-100 py-2 pr-4 pl-3 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:p-0 md:hover:text-blue-700 md:dark:hover:bg-transparent md:dark:hover:text-white "
@@ -23,7 +19,7 @@ export const NavBar = () => {
             Login
           </a>
         </NextLink>
-        <NextLink href="/register">
+        <NextLink href="/register" passHref>
           <a
             href="#"
             className="block border-b border-gray-100 py-2 pr-4 pl-3 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:p-0 md:hover:text-blue-700 md:dark:hover:bg-transparent md:dark:hover:text-white "

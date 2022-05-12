@@ -7,7 +7,7 @@ import { toErrorMap } from '../utils/toErrorMap'
 import { withUrqlClient } from 'next-urql'
 import { createUrqlClient } from '../utils/createUrqlClient'
 
-const Login: NextPage = () => {
+export const Login: NextPage<{}> = ({}) => {
   const [, login] = useLoginMutation()
   const router = useRouter()
 

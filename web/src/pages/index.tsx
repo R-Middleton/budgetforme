@@ -1,10 +1,9 @@
-import type { NextPage } from 'next'
 import { NavBar } from '../components/navbar'
 import { withUrqlClient } from 'next-urql'
 import { createUrqlClient } from '../utils/createUrqlClient'
 import { useAccountsQuery } from '../generated/graphql'
 
-const Home: NextPage = () => {
+const Index = () => {
   const [{ data }] = useAccountsQuery()
   return (
     <>
@@ -22,4 +21,4 @@ const Home: NextPage = () => {
   )
 }
 
-export default withUrqlClient(createUrqlClient, { ssr: true })(Home)
+export default withUrqlClient(createUrqlClient)(Index)
