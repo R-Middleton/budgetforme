@@ -1,19 +1,20 @@
 import type { NextPage } from 'next'
 import { Form, Formik } from 'formik'
 import { useRouter } from 'next/router'
-import { InputField } from '../components/InputeField'
+import { InputField } from '../components/InputField'
 import { useLoginMutation } from '../generated/graphql'
 import { toErrorMap } from '../utils/toErrorMap'
 import { withUrqlClient } from 'next-urql'
 import { createUrqlClient } from '../utils/createUrqlClient'
 import NextLink from 'next/link'
+import { Layout } from '../components/Layout'
 
 export const Login: NextPage<{}> = ({}) => {
   const [, login] = useLoginMutation()
   const router = useRouter()
 
   return (
-    <div className="mx-auto mt-8 w-full max-w-sm">
+    <Layout variant="small">
       <Formik
         initialValues={{
           usernameOrEmail: '',
@@ -57,7 +58,7 @@ export const Login: NextPage<{}> = ({}) => {
           </div>
         </Form>
       </Formik>
-    </div>
+    </Layout>
   )
 }
 

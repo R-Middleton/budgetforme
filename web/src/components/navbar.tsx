@@ -10,7 +10,10 @@ export const NavBar = () => {
   if (isServer() || fetching) {
   } else if (!data?.me) {
     body = (
-      <nav className="ml-auto mt-4 flex flex-col md:mt-0 md:flex-row md:space-x-8 md:text-sm md:font-medium">
+      <nav className=" ml-auto mt-4 flex flex-col md:mt-0 md:flex-row md:space-x-8 md:text-sm md:font-medium">
+        <NextLink href="/" passHref>
+          <a className=" text-yellow-400 hover:text-yellow-300">Home</a>
+        </NextLink>
         <NextLink href="/login" passHref>
           <a
             href="#"

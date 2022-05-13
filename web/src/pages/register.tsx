@@ -1,18 +1,19 @@
 import type { NextPage } from 'next'
 import { Form, Formik } from 'formik'
 import { useRouter } from 'next/router'
-import { InputField } from '../components/InputeField'
+import { InputField } from '../components/InputField'
 import { useRegisterMutation } from '../generated/graphql'
 import { toErrorMap } from '../utils/toErrorMap'
 import { withUrqlClient } from 'next-urql'
 import { createUrqlClient } from '../utils/createUrqlClient'
+import { Layout } from '../components/Layout'
 
 const Register: NextPage = () => {
   const [, register] = useRegisterMutation()
   const router = useRouter()
 
   return (
-    <div className="mx-auto mt-8 w-full max-w-sm">
+    <Layout variant="small">
       <Formik
         initialValues={{
           email: '',
@@ -56,7 +57,7 @@ const Register: NextPage = () => {
           </button>
         </Form>
       </Formik>
-    </div>
+    </Layout>
   )
 }
 

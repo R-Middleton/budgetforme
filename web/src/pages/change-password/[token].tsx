@@ -1,8 +1,9 @@
 import { Formik, Form } from 'formik'
 import { NextPage } from 'next'
 import { withUrqlClient } from 'next-urql'
-import router, { useRouter } from 'next/router'
-import { InputField } from '../../components/InputeField'
+import { useRouter } from 'next/router'
+import { InputField } from '../../components/InputField'
+import { Layout } from '../../components/Layout'
 import { useChangePasswordMutation } from '../../generated/graphql'
 import { createUrqlClient } from '../../utils/createUrqlClient'
 import { toErrorMap } from '../../utils/toErrorMap'
@@ -12,7 +13,7 @@ const ChangePassword: NextPage<{ token: string }> = (token) => {
   const router = useRouter()
 
   return (
-    <div className="mx-auto mt-8 w-full max-w-sm">
+    <Layout variant="small">
       <Formik
         initialValues={{
           newPassword: '',
@@ -45,7 +46,7 @@ const ChangePassword: NextPage<{ token: string }> = (token) => {
           </button>
         </Form>
       </Formik>
-    </div>
+    </Layout>
   )
 }
 

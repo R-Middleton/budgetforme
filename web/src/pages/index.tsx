@@ -1,13 +1,12 @@
-import { NavBar } from '../components/navbar'
 import { withUrqlClient } from 'next-urql'
 import { createUrqlClient } from '../utils/createUrqlClient'
 import { useAccountsQuery } from '../generated/graphql'
+import { Layout } from '../components/Layout'
 
 const Index = () => {
   const [{ data }] = useAccountsQuery()
   return (
-    <>
-      <NavBar />
+    <Layout>
       <div>Hello world</div>
       <br />
       {!data
@@ -17,7 +16,7 @@ const Index = () => {
               Account: {account.name} Balance: {account.balance}
             </div>
           ))}
-    </>
+    </Layout>
   )
 }
 

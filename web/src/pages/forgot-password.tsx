@@ -2,7 +2,8 @@ import { Form, Formik } from 'formik'
 import type { NextPage } from 'next'
 import { withUrqlClient } from 'next-urql'
 import { useState } from 'react'
-import { InputField } from '../components/InputeField'
+import { InputField } from '../components/InputField'
+import { Layout } from '../components/Layout'
 import { useForgotPasswordMutation } from '../generated/graphql'
 import { createUrqlClient } from '../utils/createUrqlClient'
 
@@ -11,7 +12,7 @@ export const ForgotPassword: NextPage<{}> = ({}) => {
   const [, forgotPassword] = useForgotPasswordMutation()
 
   return (
-    <div className="mx-auto mt-8 w-full max-w-sm">
+    <Layout variant="small">
       <Formik
         initialValues={{
           email: '',
@@ -49,7 +50,7 @@ export const ForgotPassword: NextPage<{}> = ({}) => {
           </Form>
         )}
       </Formik>
-    </div>
+    </Layout>
   )
 }
 
