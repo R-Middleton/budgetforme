@@ -6,6 +6,7 @@ import { useLoginMutation } from '../generated/graphql'
 import { toErrorMap } from '../utils/toErrorMap'
 import { withUrqlClient } from 'next-urql'
 import { createUrqlClient } from '../utils/createUrqlClient'
+import NextLink from 'next/link'
 
 export const Login: NextPage<{}> = ({}) => {
   const [, login] = useLoginMutation()
@@ -41,12 +42,19 @@ export const Login: NextPage<{}> = ({}) => {
             placeholder="Password"
             type="password"
           />
-          <button
-            className="w-20 rounded-md bg-blue-500 py-2 px-4 text-white hover:bg-blue-700"
-            type="submit"
-          >
-            Login
-          </button>
+          <div className="flex justify-between ">
+            <button
+              className="w-20 rounded-md bg-blue-500 py-2 px-4 text-white hover:bg-blue-700"
+              type="submit"
+            >
+              Login
+            </button>
+            <NextLink href={'/forgot-password'} passHref>
+              <button className="w-44 rounded-md bg-blue-500 py-2 px-4 text-white hover:bg-blue-700">
+                Forgot Password
+              </button>
+            </NextLink>
+          </div>
         </Form>
       </Formik>
     </div>

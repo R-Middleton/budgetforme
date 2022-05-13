@@ -104,9 +104,6 @@ let UserResolver = class UserResolver {
             };
         }
         req.session.userId = user.id;
-        console.log(req.session.userId);
-        console.log(req.session);
-        console.log(req.session.cookie);
         return {
             user,
         };
@@ -122,7 +119,7 @@ let UserResolver = class UserResolver {
             resolve(true);
         }));
     }
-    async ForgotPassword(email, { redis }) {
+    async forgotPassword(email, { redis }) {
         const user = await User_1.User.findOne({ where: { email } });
         if (!user) {
             return true;
@@ -131,6 +128,52 @@ let UserResolver = class UserResolver {
         await redis.set(constants_1.FORGET_PASSWORD_PREFIX + token, user.id, 'EX', 1000 * 60 * 60);
         (0, sendEmail_1.sendEmail)(email, `<a href="http://localhost:3000/change-password/${token}">reset password</a>`);
         return true;
+    }
+    async changePassword(token, newPassword, { redis, req }) {
+        if (newPassword.length <= 3) {
+            return {
+                errors: [
+                    {
+                        field: 'newPassword',
+                        message: 'password must be longer than 3 characters',
+                    },
+                ],
+            };
+        }
+        console.log('redis', redis);
+        const key = constants_1.FORGET_PASSWORD_PREFIX + token;
+        const userId = await redis.get(key);
+        if (!userId) {
+            return {
+                errors: [
+                    {
+                        field: 'token',
+                        message: 'token expired',
+                    },
+                ],
+            };
+        }
+        const userIdNum = parseInt(userId);
+        const user = await User_1.User.findOne({
+            where: {
+                id: userIdNum,
+            },
+        });
+        if (!user) {
+            return {
+                errors: [
+                    {
+                        field: 'token',
+                        message: 'user no longer exists',
+                    },
+                ],
+            };
+        }
+        user.password = await argon2_1.default.hash(newPassword);
+        await User_1.User.update({ id: userIdNum }, { password: user.password });
+        await redis.del(key);
+        req.session.userId = user.id;
+        return { user };
     }
 };
 __decorate([
@@ -171,7 +214,16 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
-], UserResolver.prototype, "ForgotPassword", null);
+], UserResolver.prototype, "forgotPassword", null);
+__decorate([
+    (0, type_graphql_1.Mutation)(() => UserResponse),
+    __param(0, (0, type_graphql_1.Arg)('token')),
+    __param(1, (0, type_graphql_1.Arg)('newPassword')),
+    __param(2, (0, type_graphql_1.Ctx)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String, Object]),
+    __metadata("design:returntype", Promise)
+], UserResolver.prototype, "changePassword", null);
 UserResolver = __decorate([
     (0, type_graphql_1.Resolver)()
 ], UserResolver);

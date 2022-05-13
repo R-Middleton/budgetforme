@@ -116,9 +116,6 @@ export class UserResolver {
     // This will set a cookie on the user
     // and keep them logged in
     req.session!.userId = user.id;
-    console.log(req.session!.userId);
-    console.log(req.session);
-    console.log(req.session!.cookie);
 
     return {
       user,
@@ -141,7 +138,7 @@ export class UserResolver {
   }
 
   @Mutation(() => Boolean)
-  async ForgotPassword(
+  async forgotPassword(
     @Arg('email') email: string,
     @Ctx() { redis }: MyContext
   ) {
@@ -164,5 +161,63 @@ export class UserResolver {
       `<a href="http://localhost:3000/change-password/${token}">reset password</a>`
     );
     return true;
+  }
+
+  @Mutation(() => UserResponse)
+  async changePassword(
+    @Arg('token') token: string,
+    @Arg('newPassword') newPassword: string,
+    @Ctx() { redis, req }: MyContext
+  ): Promise<UserResponse> {
+    if (newPassword.length <= 3) {
+      return {
+        errors: [
+          {
+            field: 'newPassword',
+            message: 'password must be longer than 3 characters',
+          },
+        ],
+      };
+    }
+
+    console.log('redis', redis);
+    const key = FORGET_PASSWORD_PREFIX + token;
+    const userId = await redis.get(key);
+    if (!userId) {
+      return {
+        errors: [
+          {
+            field: 'token',
+            message: 'token expired',
+          },
+        ],
+      };
+    }
+
+    const userIdNum = parseInt(userId);
+    const user = await User.findOne({
+      where: {
+        id: userIdNum,
+      },
+    });
+
+    if (!user) {
+      return {
+        errors: [
+          {
+            field: 'token',
+            message: 'user no longer exists',
+          },
+        ],
+      };
+    }
+
+    user.password = await argon2.hash(newPassword);
+    await User.update({ id: userIdNum }, { password: user.password });
+
+    await redis.del(key);
+    //log user in after resetting password
+    req.session.userId = user.id;
+    return { user };
   }
 }
