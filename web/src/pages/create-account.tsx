@@ -16,7 +16,7 @@ const CreateAccount: React.FC<{}> = ({}) => {
         initialValues={{
           name: '',
         }}
-        onSubmit={async (values, { setErrors }) => {
+        onSubmit={async (values) => {
           await createAccount({ input: values })
           router.push('/')
           console.log(values)
