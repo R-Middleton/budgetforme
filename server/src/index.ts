@@ -3,10 +3,6 @@ import { ApolloServer } from 'apollo-server-express';
 import express from 'express';
 import { buildSchema } from 'type-graphql';
 import { HelloResolver } from './resolvers/hello';
-import { DataSource } from 'typeorm';
-import { User } from './entities/User';
-import { Transaction } from './entities/Transaction';
-import { Account } from './entities/Account';
 import { MyContext } from './types';
 import { UserResolver } from './resolvers/user';
 import { AccountResolver } from './resolvers/account';
@@ -15,8 +11,7 @@ import session from 'express-session';
 import Redis from 'ioredis';
 import { COOKIENAME, __prod__ } from './constants';
 import cors from 'cors';
-import { Category } from './entities/Category';
-import { CategoryGroup } from './entities/CategoryGroup';
+import { AppDataSource } from './AppDataSource';
 
 declare module 'express-session' {
   interface Session {
@@ -25,16 +20,7 @@ declare module 'express-session' {
 }
 
 const main = async () => {
-  const dataSource = new DataSource({
-    type: 'postgres',
-    database: 'budgetforme',
-    username: 'postgres',
-    password: 'postgres',
-    logging: true,
-    synchronize: true,
-    entities: [User, Account, Transaction, Category, CategoryGroup],
-  });
-  await dataSource.initialize();
+  await AppDataSource.initialize();
   const app = express();
 
   app.use(
