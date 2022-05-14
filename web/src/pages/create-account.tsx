@@ -1,4 +1,4 @@
-import { Formik, Form } from 'formik'
+import { Form, Formik } from 'formik'
 import { withUrqlClient } from 'next-urql'
 import { useRouter } from 'next/router'
 import React from 'react'
@@ -6,10 +6,13 @@ import { InputField } from '../components/InputField'
 import { Layout } from '../components/Layout'
 import { useCreateAccountMutation } from '../generated/graphql'
 import { createUrqlClient } from '../utils/createUrqlClient'
+import { useIsAuth } from '../utils/useIsAuth'
 
 const CreateAccount: React.FC<{}> = ({}) => {
-  const router = useRouter()
   const [, createAccount] = useCreateAccountMutation()
+  const router = useRouter()
+  useIsAuth()
+
   return (
     <Layout variant="small">
       <Formik
@@ -19,7 +22,6 @@ const CreateAccount: React.FC<{}> = ({}) => {
         onSubmit={async (values) => {
           await createAccount({ input: values })
           router.push('/')
-          console.log(values)
         }}
       >
         <Form className=" grid grid-cols-1 gap-6">

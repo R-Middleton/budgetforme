@@ -8,10 +8,6 @@ const apollo_server_express_1 = require("apollo-server-express");
 const express_1 = __importDefault(require("express"));
 const type_graphql_1 = require("type-graphql");
 const hello_1 = require("./resolvers/hello");
-const typeorm_1 = require("typeorm");
-const User_1 = require("./entities/User");
-const Transaction_1 = require("./entities/Transaction");
-const Account_1 = require("./entities/Account");
 const user_1 = require("./resolvers/user");
 const account_1 = require("./resolvers/account");
 const connect_redis_1 = __importDefault(require("connect-redis"));
@@ -19,19 +15,9 @@ const express_session_1 = __importDefault(require("express-session"));
 const ioredis_1 = __importDefault(require("ioredis"));
 const constants_1 = require("./constants");
 const cors_1 = __importDefault(require("cors"));
-const Category_1 = require("./entities/Category");
-const CategoryGroup_1 = require("./entities/CategoryGroup");
+const AppDataSource_1 = require("./AppDataSource");
 const main = async () => {
-    const dataSource = new typeorm_1.DataSource({
-        type: 'postgres',
-        database: 'budgetforme',
-        username: 'postgres',
-        password: 'postgres',
-        logging: true,
-        synchronize: true,
-        entities: [User_1.User, Account_1.Account, Transaction_1.Transaction, Category_1.Category, CategoryGroup_1.CategoryGroup],
-    });
-    await dataSource.initialize();
+    await AppDataSource_1.AppDataSource.initialize();
     const app = (0, express_1.default)();
     app.use((0, cors_1.default)({
         origin: ['http://localhost:3000', 'https://studio.apollographql.com'],

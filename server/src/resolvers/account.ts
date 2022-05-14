@@ -33,8 +33,15 @@ export class AccountResolver {
   }
 
   @Query(() => [Account])
-  async accounts(): Promise<Account[]> {
-    return Account.find();
+  async accounts(@Ctx() { req }: MyContext): Promise<Account[]> {
+    console.log(req.session!.userId);
+    if (!req.session!.userId) {
+      return [];
+    } else {
+      return await Account.find({
+        where: { userId: req.session!.userId },
+      });
+    }
   }
 
   // @Mutation(() => UserResponse)

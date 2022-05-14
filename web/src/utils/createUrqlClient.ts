@@ -66,7 +66,7 @@ export const createUrqlClient = (ssrExchange: any) => ({
     errorExchange({
       onError(error) {
         if (error?.message.includes('not authenticated')) {
-          Router.push('/login')
+          Router.replace('/login')
         }
         console.log('[Error]', error.message)
       },
