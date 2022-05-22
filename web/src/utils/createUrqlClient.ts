@@ -2,6 +2,7 @@ import { dedupExchange, errorExchange, fetchExchange } from '@urql/core'
 import { cacheExchange } from '@urql/exchange-graphcache'
 import Router from 'next/router'
 import {
+  CreateAccountMutation,
   LoginMutation,
   LogoutMutation,
   MeDocument,
@@ -20,6 +21,22 @@ export const createUrqlClient = (ssrExchange: any) => ({
     cacheExchange({
       updates: {
         Mutation: {
+          createAccount: (result, _args, cache, _info) => {
+            betterUpdateQuery<CreateAccountMutation, MeQuery>(
+              cache,
+              { query: MeDocument },
+              result,
+              (result, query) => ({
+                __typename: 'Query',
+                me: {
+                  __typename: 'User',
+                  id: query.me!.id,
+                  username: query.me!.username,
+                  accounts: query.me!.accounts.concat([result.createAccount]),
+                },
+              })
+            )
+          },
           logout: (result, _args, cache, _info) => {
             betterUpdateQuery<LogoutMutation, MeQuery>(
               cache,
