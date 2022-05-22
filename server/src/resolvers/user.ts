@@ -16,6 +16,7 @@ import { COOKIENAME, FORGET_PASSWORD_PREFIX } from '../constants';
 import { FieldError } from './FieldError';
 import { sendEmail } from '../utils/sendEmail';
 import { v4 } from 'uuid';
+import { AppDataSource } from '../AppDataSource';
 
 @ObjectType()
 class UserResponse {
@@ -85,11 +86,14 @@ export class UserResolver {
     @Arg('password') password: string,
     @Ctx() { req }: MyContext
   ): Promise<UserResponse> {
-    const user = await User.findOne(
-      !usernameOrEmail.includes('@')
-        ? { where: { username: usernameOrEmail } }
-        : { where: { email: usernameOrEmail } }
-    );
+    const user = await AppDataSource.getRepository(User)
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.accounts', 'account')
+      .where('user.username = :username', { username: usernameOrEmail })
+      .orWhere('user.email = :email', { email: usernameOrEmail })
+      .getOne();
+
+    console.log('user', user);
     if (!user) {
       return {
         errors: [
