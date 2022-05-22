@@ -34,7 +34,11 @@ export class UserResolver {
       return null!;
     }
 
-    return User.findOne({ where: { id: req.session!.userId } });
+    return AppDataSource.getRepository(User)
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.accounts', 'account')
+      .where('user.id = :id', { id: req.session!.userId })
+      .getOne();
   }
 
   @Mutation(() => UserResponse)
@@ -94,6 +98,7 @@ export class UserResolver {
       .getOne();
 
     console.log('user', user);
+
     if (!user) {
       return {
         errors: [

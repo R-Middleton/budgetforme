@@ -36,6 +36,7 @@ export class User extends BaseEntity {
   @Column()
   password!: string;
 
+  @Field(() => [Account])
   @OneToMany(() => Account, (account) => account.user)
   accounts: Account[];
 }

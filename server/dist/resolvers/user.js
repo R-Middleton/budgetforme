@@ -25,6 +25,7 @@ const constants_1 = require("../constants");
 const FieldError_1 = require("./FieldError");
 const sendEmail_1 = require("../utils/sendEmail");
 const uuid_1 = require("uuid");
+const AppDataSource_1 = require("../AppDataSource");
 let UserResponse = class UserResponse {
 };
 __decorate([
@@ -43,7 +44,11 @@ let UserResolver = class UserResolver {
         if (!req.session.userId) {
             return null;
         }
-        return User_1.User.findOne({ where: { id: req.session.userId } });
+        return AppDataSource_1.AppDataSource.getRepository(User_1.User)
+            .createQueryBuilder('user')
+            .leftJoinAndSelect('user.accounts', 'account')
+            .where('user.id = :id', { id: req.session.userId })
+            .getOne();
     }
     async register(options, { req }) {
         const errors = (0, validateRegister_1.validateRegsiter)(options);
@@ -79,9 +84,13 @@ let UserResolver = class UserResolver {
         };
     }
     async login(usernameOrEmail, password, { req }) {
-        const user = await User_1.User.findOne(!usernameOrEmail.includes('@')
-            ? { where: { username: usernameOrEmail } }
-            : { where: { email: usernameOrEmail } });
+        const user = await AppDataSource_1.AppDataSource.getRepository(User_1.User)
+            .createQueryBuilder('user')
+            .leftJoinAndSelect('user.accounts', 'account')
+            .where('user.username = :username', { username: usernameOrEmail })
+            .orWhere('user.email = :email', { email: usernameOrEmail })
+            .getOne();
+        console.log('user', user);
         if (!user) {
             return {
                 errors: [

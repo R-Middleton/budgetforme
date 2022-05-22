@@ -2,11 +2,11 @@ import { dedupExchange, errorExchange, fetchExchange } from '@urql/core'
 import { cacheExchange } from '@urql/exchange-graphcache'
 import Router from 'next/router'
 import {
-  RegisterMutation,
   LoginMutation,
+  LogoutMutation,
   MeDocument,
   MeQuery,
-  LogoutMutation,
+  RegisterMutation,
 } from '../generated/graphql'
 import { betterUpdateQuery } from './betterUpdateQuery'
 

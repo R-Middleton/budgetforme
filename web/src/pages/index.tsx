@@ -1,12 +1,13 @@
 import { withUrqlClient } from 'next-urql'
 import { createUrqlClient } from '../utils/createUrqlClient'
-import { useAccountsQuery } from '../generated/graphql'
+import { useMeQuery } from '../generated/graphql'
 import { Layout } from '../components/Layout'
 import NextLink from 'next/link'
+import { isServer } from '../utils/isServer'
 
 const Index = () => {
-  const [{ data: accountData }] = useAccountsQuery()
-  // const [{ data: transactionData }] = useTransactionsQuery()
+  const [{ data }] = useMeQuery({ pause: isServer() })
+
   return (
     <Layout>
       <h1 className="text-5xl">Budget For Me</h1>
@@ -17,13 +18,15 @@ const Index = () => {
             Create Account
           </button>
         </NextLink>
-        {!accountData
-          ? null
-          : accountData.accounts.map((account) => (
-              <div key={account.id}>
-                Account: {account.name} Balance: {account.balance}
-              </div>
+        {data?.me ? (
+          <ul>
+            {data.me.accounts.map((account) => (
+              <li key={account.id}>Hello {account.name}</li>
             ))}
+          </ul>
+        ) : (
+          <div>You must be logged in to view accounts</div>
+        )}
       </div>
       <div>
         <h2 className="text-4xl">Transactions</h2>
