@@ -74,9 +74,15 @@ export type MutationRegisterArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  account?: Maybe<Account>;
   accounts: Array<Account>;
   hello: Scalars['String'];
   me?: Maybe<User>;
+};
+
+
+export type QueryAccountArgs = {
+  id: Scalars['Int'];
 };
 
 export type User = {
@@ -148,6 +154,13 @@ export type RegisterMutationVariables = Exact<{
 
 
 export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, user?: { __typename?: 'User', id: number, username: string, accounts: Array<{ __typename?: 'Account', id: number, name: string, balance: number }> } | null } };
+
+export type AccountQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type AccountQuery = { __typename?: 'Query', account?: { __typename?: 'Account', id: number, name: string, balance: number, userId: number, createdAt: string, updatedAt: string } | null };
 
 export type AccountsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -253,6 +266,22 @@ export const RegisterDocument = gql`
 
 export function useRegisterMutation() {
   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
+};
+export const AccountDocument = gql`
+    query Account($id: Int!) {
+  account(id: $id) {
+    id
+    name
+    balance
+    userId
+    createdAt
+    updatedAt
+  }
+}
+    `;
+
+export function useAccountQuery(options: Omit<Urql.UseQueryArgs<AccountQueryVariables>, 'query'>) {
+  return Urql.useQuery<AccountQuery>({ query: AccountDocument, ...options });
 };
 export const AccountsDocument = gql`
     query Accounts {

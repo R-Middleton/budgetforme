@@ -40,6 +40,16 @@ let AccountResolver = class AccountResolver {
             });
         }
     }
+    async account({ req }, id) {
+        if (!req.session.userId) {
+            return null;
+        }
+        const account = await Account_1.Account.findOne({ where: { id } });
+        if ((account === null || account === void 0 ? void 0 : account.userId) !== req.session.userId) {
+            return null;
+        }
+        return account;
+    }
 };
 __decorate([
     (0, type_graphql_1.Mutation)(() => Account_1.Account),
@@ -57,6 +67,14 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AccountResolver.prototype, "accounts", null);
+__decorate([
+    (0, type_graphql_1.Query)(() => Account_1.Account, { nullable: true }),
+    __param(0, (0, type_graphql_1.Ctx)()),
+    __param(1, (0, type_graphql_1.Arg)('id', () => type_graphql_1.Int)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Number]),
+    __metadata("design:returntype", Promise)
+], AccountResolver.prototype, "account", null);
 AccountResolver = __decorate([
     (0, type_graphql_1.Resolver)()
 ], AccountResolver);

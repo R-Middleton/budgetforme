@@ -38,14 +38,16 @@ export const NavBar = () => {
         <div className="block  py-2 pr-4 pl-3 text-white  dark:border-gray-700 dark:text-white   md:p-0  ">
           {data.me.username}
         </div>
-        <button
-          onClick={() => {
-            logout()
-          }}
-          className="block border-b border-gray-100 py-2 pr-4 pl-3 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:p-0 md:hover:text-blue-700 md:dark:hover:bg-transparent md:dark:hover:text-white"
-        >
-          Logout
-        </button>
+        <NextLink href="/" passHref>
+          <button
+            onClick={() => {
+              logout()
+            }}
+            className="block border-b border-gray-100 py-2 pr-4 pl-3 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:p-0 md:hover:text-blue-700 md:dark:hover:bg-transparent md:dark:hover:text-white"
+          >
+            Logout
+          </button>
+        </NextLink>
       </nav>
     )
   }

@@ -4,6 +4,7 @@ import {
   Ctx,
   Field,
   InputType,
+  Int,
   Mutation,
   Query,
   Resolver,
@@ -42,5 +43,20 @@ export class AccountResolver {
         where: { userId: req.session!.userId },
       });
     }
+  }
+
+  @Query(() => Account, { nullable: true })
+  async account(
+    @Ctx() { req }: MyContext,
+    @Arg('id', () => Int) id: number
+  ): Promise<Account | null> {
+    if (!req.session!.userId) {
+      return null;
+    }
+    const account = await Account.findOne({ where: { id } });
+    if (account?.userId !== req.session!.userId) {
+      return null;
+    }
+    return account;
   }
 }
