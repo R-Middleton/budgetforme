@@ -13,6 +13,8 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
+  DateTime: any;
 };
 
 export type Account = {
@@ -21,6 +23,7 @@ export type Account = {
   createdAt: Scalars['String'];
   id: Scalars['Float'];
   name: Scalars['String'];
+  transactions: Array<Transaction>;
   updatedAt: Scalars['String'];
   userId: Scalars['Float'];
 };
@@ -39,6 +42,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   changePassword: UserResponse;
   createAccount: Account;
+  createTransaction: Transaction;
   forgotPassword: Scalars['Boolean'];
   login: UserResponse;
   logout: Scalars['Boolean'];
@@ -54,6 +58,11 @@ export type MutationChangePasswordArgs = {
 
 export type MutationCreateAccountArgs = {
   input: AccountInput;
+};
+
+
+export type MutationCreateTransactionArgs = {
+  input: TransactionInput;
 };
 
 
@@ -78,11 +87,43 @@ export type Query = {
   accounts: Array<Account>;
   hello: Scalars['String'];
   me?: Maybe<User>;
+  transaction: Transaction;
+  transactions: Array<Transaction>;
 };
 
 
 export type QueryAccountArgs = {
   id: Scalars['Int'];
+};
+
+
+export type QueryTransactionArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type QueryTransactionsArgs = {
+  accountId: Scalars['Int'];
+};
+
+export type Transaction = {
+  __typename?: 'Transaction';
+  accountId: Scalars['Float'];
+  amount: Scalars['Float'];
+  createdAt: Scalars['String'];
+  date: Scalars['DateTime'];
+  id: Scalars['Float'];
+  note: Scalars['String'];
+  type: Scalars['String'];
+  updatedAt: Scalars['String'];
+};
+
+export type TransactionInput = {
+  accountId: Scalars['Float'];
+  amount: Scalars['Float'];
+  date: Scalars['DateTime'];
+  note: Scalars['String'];
+  type: Scalars['String'];
 };
 
 export type User = {
@@ -160,7 +201,7 @@ export type AccountQueryVariables = Exact<{
 }>;
 
 
-export type AccountQuery = { __typename?: 'Query', account?: { __typename?: 'Account', id: number, name: string, balance: number, userId: number, createdAt: string, updatedAt: string } | null };
+export type AccountQuery = { __typename?: 'Query', account?: { __typename?: 'Account', id: number, name: string, balance: number, userId: number } | null };
 
 export type AccountsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -171,6 +212,13 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, username: string, accounts: Array<{ __typename?: 'Account', id: number, name: string, balance: number }> } | null };
+
+export type TransactionsQueryVariables = Exact<{
+  accountId: Scalars['Int'];
+}>;
+
+
+export type TransactionsQuery = { __typename?: 'Query', transactions: Array<{ __typename?: 'Transaction', id: number, amount: number, note: string, type: string, accountId: number, createdAt: string, updatedAt: string, date: any }> };
 
 export const RegularErrorFragmentDoc = gql`
     fragment RegularError on FieldError {
@@ -274,8 +322,6 @@ export const AccountDocument = gql`
     name
     balance
     userId
-    createdAt
-    updatedAt
   }
 }
     `;
@@ -309,4 +355,22 @@ export const MeDocument = gql`
 
 export function useMeQuery(options?: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'>) {
   return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
+};
+export const TransactionsDocument = gql`
+    query Transactions($accountId: Int!) {
+  transactions(accountId: $accountId) {
+    id
+    amount
+    note
+    type
+    accountId
+    createdAt
+    updatedAt
+    date
+  }
+}
+    `;
+
+export function useTransactionsQuery(options: Omit<Urql.UseQueryArgs<TransactionsQueryVariables>, 'query'>) {
+  return Urql.useQuery<TransactionsQuery>({ query: TransactionsDocument, ...options });
 };

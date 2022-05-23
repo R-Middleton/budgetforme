@@ -21,10 +21,25 @@ __decorate([
     __metadata("design:type", Number)
 ], Transaction.prototype, "id", void 0);
 __decorate([
+    (0, type_graphql_1.Field)(),
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Date)
+], Transaction.prototype, "date", void 0);
+__decorate([
     (0, type_graphql_1.Field)(() => type_graphql_1.Float),
     (0, typeorm_1.Column)({ type: 'float', default: 0 }),
     __metadata("design:type", Number)
-], Transaction.prototype, "ammount", void 0);
+], Transaction.prototype, "amount", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(),
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Transaction.prototype, "note", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(),
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Transaction.prototype, "type", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
     (0, typeorm_1.Column)(),

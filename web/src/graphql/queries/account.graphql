@@ -4,7 +4,5 @@ query Account($id: Int!) {
     name
     balance
     userId
-    createdAt
-    updatedAt
   }
 }

@@ -42,6 +42,7 @@ __decorate([
     __metadata("design:type", User_1.User)
 ], Account.prototype, "user", void 0);
 __decorate([
+    (0, type_graphql_1.Field)(() => [Transaction_1.Transaction]),
     (0, typeorm_1.OneToMany)(() => Transaction_1.Transaction, (transaction) => transaction.account),
     __metadata("design:type", Array)
 ], Account.prototype, "transactions", void 0);

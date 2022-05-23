@@ -17,13 +17,25 @@ export class Transaction extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
+  @Field()
+  @Column()
+  date!: Date;
+
   @Field(() => Float)
   @Column({ type: 'float', default: 0 })
-  ammount!: number;
+  amount!: number;
 
   @Field()
   @Column()
-  accountId: number;
+  note: string;
+
+  @Field()
+  @Column()
+  type!: string;
+
+  @Field()
+  @Column()
+  accountId!: number;
 
   @ManyToOne(() => Account, (account) => account.transactions)
   account!: Account;

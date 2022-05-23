@@ -16,6 +16,7 @@ const ioredis_1 = __importDefault(require("ioredis"));
 const constants_1 = require("./constants");
 const cors_1 = __importDefault(require("cors"));
 const AppDataSource_1 = require("./AppDataSource");
+const transaction_1 = require("./resolvers/transaction");
 const main = async () => {
     await AppDataSource_1.AppDataSource.initialize();
     const app = (0, express_1.default)();
@@ -43,7 +44,12 @@ const main = async () => {
     }));
     const apolloServer = new apollo_server_express_1.ApolloServer({
         schema: await (0, type_graphql_1.buildSchema)({
-            resolvers: [hello_1.HelloResolver, user_1.UserResolver, account_1.AccountResolver],
+            resolvers: [
+                hello_1.HelloResolver,
+                user_1.UserResolver,
+                account_1.AccountResolver,
+                transaction_1.TransactionResolver,
+            ],
             validate: false,
         }),
         context: ({ req, res }) => ({ req, res, redis }),

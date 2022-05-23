@@ -1,0 +1,12 @@
+query Transactions($accountId: Int!) {
+  transactions(accountId: $accountId) {
+    id
+    amount
+    note
+    type
+    accountId
+    createdAt
+    updatedAt
+    date
+  }
+}

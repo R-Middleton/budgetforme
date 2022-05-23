@@ -12,6 +12,7 @@ import Redis from 'ioredis';
 import { COOKIENAME, __prod__ } from './constants';
 import cors from 'cors';
 import { AppDataSource } from './AppDataSource';
+import { TransactionResolver } from './resolvers/transaction';
 
 declare module 'express-session' {
   interface Session {
@@ -54,7 +55,12 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HelloResolver, UserResolver, AccountResolver],
+      resolvers: [
+        HelloResolver,
+        UserResolver,
+        AccountResolver,
+        TransactionResolver,
+      ],
       validate: false,
     }),
     context: ({ req, res }): MyContext => ({ req, res, redis }),

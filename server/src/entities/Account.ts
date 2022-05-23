@@ -35,6 +35,7 @@ export class Account extends BaseEntity {
   @ManyToOne(() => User, (user) => user.accounts)
   user!: User;
 
+  @Field(() => [Transaction])
   @OneToMany(() => Transaction, (transaction) => transaction.account)
   transactions: Transaction[];
 
