@@ -31,6 +31,8 @@ const Account = () => {
       {
         Header: 'Date',
         accessor: 'date',
+        Cell: ({ cell: { value } }: { cell: any }) =>
+          new Date(value).toLocaleDateString(),
       },
       {
         Header: 'Note',
