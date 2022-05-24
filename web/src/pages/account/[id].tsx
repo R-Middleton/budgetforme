@@ -41,6 +41,7 @@ const Account = () => {
       {
         Header: 'Amount',
         accessor: 'amount',
+        Cell: ({ cell: { value } }: { cell: any }) => `£${value}`,
       },
       {
         Header: 'Type',
