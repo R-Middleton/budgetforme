@@ -9,12 +9,12 @@ interface layoutProps {
 
 export const Layout: React.FC<layoutProps> = ({ children, variant }) => {
   return (
-    <>
+    <div className="bg-gray-100">
       <NavBar />
       <div className="flex">
         <Sidebar />
         <Wrapper variant={variant}>{children}</Wrapper>
       </div>
-    </>
+    </div>
   )
 }

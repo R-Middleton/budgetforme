@@ -56,52 +56,54 @@ const Account = () => {
 
   return (
     <Layout>
-      <div>
+      <div className="flex">
         <h1>{account.data?.account?.name}</h1>
-        <p>Balance: £{account.data?.account?.balance}</p>
+        <h2 className="pl-6">Balance: £{account.data?.account?.balance}</h2>
       </div>
-      <div className="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg">
-        <table
-          {...getTableProps()}
-          className="min-w-full divide-y divide-gray-200"
-        >
-          <thead className="bg-gray-50">
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th
-                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
-                    {...column.getHeaderProps()}
-                  >
-                    {column.render('Header')}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody
-            className="divide-y divide-gray-200 bg-white"
-            {...getTableBodyProps()}
+      <div className="pt-4">
+        <div className="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg">
+          <table
+            {...getTableProps()}
+            className="min-w-full divide-y divide-gray-200"
           >
-            {rows.map((row) => {
-              prepareRow(row)
-              return (
-                <tr {...row.getRowProps()}>
-                  {row.cells.map((cell) => {
-                    return (
-                      <td
-                        className="whitespace-nowrap px-6 py-4"
-                        {...cell.getCellProps()}
-                      >
-                        {cell.render('Cell')}
-                      </td>
-                    )
-                  })}
+            <thead className="bg-gray-50">
+              {headerGroups.map((headerGroup) => (
+                <tr {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column) => (
+                    <th
+                      className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+                      {...column.getHeaderProps()}
+                    >
+                      {column.render('Header')}
+                    </th>
+                  ))}
                 </tr>
-              )
-            })}
-          </tbody>
-        </table>
+              ))}
+            </thead>
+            <tbody
+              className="divide-y divide-gray-200 bg-white"
+              {...getTableBodyProps()}
+            >
+              {rows.map((row) => {
+                prepareRow(row)
+                return (
+                  <tr {...row.getRowProps()}>
+                    {row.cells.map((cell) => {
+                      return (
+                        <td
+                          className="whitespace-nowrap px-6 py-4"
+                          {...cell.getCellProps()}
+                        >
+                          {cell.render('Cell')}
+                        </td>
+                      )
+                    })}
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
     </Layout>
   )
